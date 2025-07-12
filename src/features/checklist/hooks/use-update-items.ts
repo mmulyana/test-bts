@@ -11,6 +11,9 @@ export const useRenameItems = () => {
 				payload
 			)
 		},
+		onSuccess: () => {
+			toast.success('Item berhasil diperbarui')
+		},
 		onError: () => {
 			toast.error('Gagal diperbarui')
 		},

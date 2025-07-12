@@ -36,59 +36,58 @@ export default function ListDetail({
 				<DialogHeader>
 					<DialogTitle>{data.name}</DialogTitle>
 				</DialogHeader>
-				<div>
-					<p>Items</p>
+				<div className='p-4 rounded-lg border space-y-4'>
 					<FormNewItems id={data.id} refetch={refetch} />
-				</div>
-				<div className='flex gap-4 flex-col'>
-					{itemsData?.data.data.map((i: any) => (
-						<ItemsEdit data={i} id={data.id} refetch={refetch} key={i.id}>
-							<div className='flex justify-between items-center w-full'>
-								<div className='flex gap-2 items-center'>
-									<button
-										className=''
+					<div className='flex gap-4 flex-col'>
+						{itemsData?.data.data.map((i: any) => (
+							<ItemsEdit data={i} id={data.id} refetch={refetch} key={i.id}>
+								<div className='flex justify-between items-center w-full'>
+									<div className='flex gap-2 items-center'>
+										<button
+											className=''
+											onClick={() => {
+												updateItem(
+													{ id: data.id, itemId: i.id },
+													{
+														onSuccess: () => {
+															refetch()
+														},
+													}
+												)
+											}}
+										>
+											{i.itemCompletionStatus ? (
+												<CircleCheck size={24} className='stroke-teal-500' />
+											) : (
+												<Circle size={24} />
+											)}
+										</button>
+										<p>{i.name || '-'}</p>
+									</div>
+									<Button
+										variant='ghost'
 										onClick={() => {
-											updateItem(
+											mutate(
 												{ id: data.id, itemId: i.id },
 												{
 													onSuccess: () => {
+														toast.success('Item berhasil di hapu')
 														refetch()
 													},
 												}
 											)
 										}}
 									>
-										{i.itemCompletionStatus ? (
-											<CircleCheck size={24} className='stroke-teal-500' />
-										) : (
-											<Circle size={24} />
-										)}
-									</button>
-									<p>{i.name || '-'}</p>
+										<Trash className='text-red-500' size={16} />
+									</Button>
 								</div>
-								<Button
-									variant='ghost'
-									onClick={() => {
-										mutate(
-											{ id: data.id, itemId: i.id },
-											{
-												onSuccess: () => {
-													toast.success('Item berhasil di hapu')
-													refetch()
-												},
-											}
-										)
-									}}
-								>
-									<Trash className='text-red-500' size={16} />
-								</Button>
-							</div>
-						</ItemsEdit>
-					))}
+							</ItemsEdit>
+						))}
+					</div>
 				</div>
 				<Button
 					variant='secondary'
-					className='mt-10 w-fit text-red-500 hover:bg-gray-200'
+					className='mt-4 w-fit text-red-500 hover:bg-gray-200'
 					onClick={() => {
 						deleteChecklist(
 							{ id: data.id },
