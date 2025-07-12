@@ -15,6 +15,7 @@ import { toast } from 'sonner'
 import { usePutItems } from '../hooks/use-put-items'
 import { useDeleteChecklist } from '../hooks/use-delete-checklist'
 import { useQueryClient } from '@tanstack/react-query'
+import ItemsEdit from './items-edit'
 
 export default function ListDetail({
 	children,
@@ -27,8 +28,6 @@ export default function ListDetail({
 	const { mutate: deleteChecklist } = useDeleteChecklist()
 	const { mutate: updateItem } = usePutItems()
 	const { data: itemsData, refetch } = useChecklistItems(open ? data.id : '')
-
-  
 
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>
@@ -43,46 +42,48 @@ export default function ListDetail({
 				</div>
 				<div className='flex gap-4 flex-col'>
 					{itemsData?.data.data.map((i: any) => (
-						<div key={i.id} className='flex justify-between items-center'>
-							<div className='flex gap-2 items-center'>
-								<button
-									className=''
+						<ItemsEdit data={i} id={data.id} refetch={refetch} key={i.id}>
+							<div className='flex justify-between items-center w-full'>
+								<div className='flex gap-2 items-center'>
+									<button
+										className=''
+										onClick={() => {
+											updateItem(
+												{ id: data.id, itemId: i.id },
+												{
+													onSuccess: () => {
+														refetch()
+													},
+												}
+											)
+										}}
+									>
+										{i.itemCompletionStatus ? (
+											<CircleCheck size={24} className='stroke-teal-500' />
+										) : (
+											<Circle size={24} />
+										)}
+									</button>
+									<p>{i.name || '-'}</p>
+								</div>
+								<Button
+									variant='ghost'
 									onClick={() => {
-										updateItem(
+										mutate(
 											{ id: data.id, itemId: i.id },
 											{
 												onSuccess: () => {
+													toast.success('Item berhasil di hapu')
 													refetch()
 												},
 											}
 										)
 									}}
 								>
-									{i.itemCompletionStatus ? (
-										<CircleCheck size={24} className='stroke-teal-500' />
-									) : (
-										<Circle size={24} />
-									)}
-								</button>
-								<p>{i.name || '-'}</p>
+									<Trash className='text-red-500' size={16} />
+								</Button>
 							</div>
-							<Button
-								variant='ghost'
-								onClick={() => {
-									mutate(
-										{ id: data.id, itemId: i.id },
-										{
-											onSuccess: () => {
-												toast.success('Item berhasil di hapu')
-												refetch()
-											},
-										}
-									)
-								}}
-							>
-								<Trash className='text-red-500' size={16} />
-							</Button>
-						</div>
+						</ItemsEdit>
 					))}
 				</div>
 				<Button
