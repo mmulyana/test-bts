@@ -27,6 +27,7 @@ export default function DialogNewChecklist() {
 		mutate(data, {
 			onSuccess: () => {
 				setOpen(false)
+				form.reset()
 			},
 		})
 	}

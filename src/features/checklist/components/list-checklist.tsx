@@ -8,7 +8,7 @@ export default function ListChecklist() {
 	const { data } = useChecklists()
 	return (
 		<div className='grid grid-cols-2 md:grid-cols-4 gap-4'>
-			{data?.data.data.map((i: any) => (
+			{data?.data?.data?.map((i: any) => (
 				<ListDetail key={i.id} data={i}>
 					<Card>
 						<CardContent>
