@@ -28,6 +28,8 @@ export default function ListDetail({
 	const { mutate: updateItem } = usePutItems()
 	const { data: itemsData, refetch } = useChecklistItems(open ? data.id : '')
 
+  
+
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>
 			<DialogTrigger asChild>{children}</DialogTrigger>
