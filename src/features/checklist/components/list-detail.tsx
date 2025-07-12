@@ -100,7 +100,7 @@ export default function ListDetail({
 						)
 					}}
 				>
-					Hapus List
+					Delete List
 				</Button>
 			</DialogContent>
 		</Dialog>
